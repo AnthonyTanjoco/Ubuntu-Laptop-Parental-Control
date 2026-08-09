@@ -40,17 +40,24 @@ Ensure your son does not have administrative (`sudo`) access to tamper with syst
 
 ---
 
-## Step 3: Block Alternative Browser & VPN Installations
-Modern Linux allows standard users to install standalone web browsers and VPN tools via Snap or Flatpak backends into their home directory without needing an admin password. Block execution permissions for these tools.
+## Step 3: Install Native Brave Browser & Block Sandboxed Formats
+Modern Linux installs software via sandboxed Snap containers by default. Because sandboxed browsers cannot read global system policy configuration files, we must completely remove the Snap version of Brave and install the native Linux APT release. After doing so, we restrict the Snap store completely.
 
-1. Restrict access to the **Snap** execution daemon:
-   ```bash
+1. Completely purge the default sandboxed version of Brave (if installed):
+   sudo snap remove brave
+
+2. Install the Official Brave Native APT Repository keys and sources:
+   sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave.com
+   sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave.com
+
+3. Update your package manager and install the native build:
+   sudo apt update && sudo apt install -y brave-browser
+
+4. Restrict access to the Snap execution daemon so standard users cannot download alternative sandboxed browsers/VPNs:
    sudo chmod 700 /usr/bin/snap
-   ```
-2. Restrict access to the **Flatpak** execution daemon (if installed):
-   ```bash
+
+5. Restrict access to the Flatpak execution daemon (if installed):
    sudo chmod 700 /usr/bin/flatpak
-   ```
 
 ---
 
@@ -86,7 +93,21 @@ This step locks Brave Browser's network settings, disables hidden proxy loophole
 
    ```
 4. Save the file (`Ctrl+O`, then `Enter`) and exit (`Ctrl+X`).
-5. Open Brave and navigate to `brave://policy` to confirm all entries display a green **Status: OK**.
+5. Enforce File Ownership & Deep Restart:
+   1. Ensure the system root profile strictly owns the directory path so users cannot edit it:
+   ```
+      sudo chown -R root:root /etc/brave/policies/
+      sudo chmod -R 755 /etc/brave/policies/
+      sudo chmod 644 /etc/brave/policies/managed/tor_policy.json
+   ```
+   3. Hard kill all persistent background browser instances in memory to force a deep configuration re-read:
+      ```
+      sudo killall brave
+      sudo killall brave-browser
+      ```
+   
+   4. Open Brave on the child's account, navigate to brave://policy, and click "Reload policies". All lines will        show Status: OK.
+
 
 ---
 
