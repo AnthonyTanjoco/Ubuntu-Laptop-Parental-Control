@@ -44,20 +44,30 @@ Ensure your son does not have administrative (`sudo`) access to tamper with syst
 Modern Linux installs software via sandboxed Snap containers by default. Because sandboxed browsers cannot read global system policy configuration files, we must completely remove the Snap version of Brave and install the native Linux APT release. After doing so, we restrict the Snap store completely.
 
 1. Completely purge the default sandboxed version of Brave (if installed):
+   ```bash
    sudo snap remove brave
+   ```
 
 2. Install the Official Brave Native APT Repository keys and sources:
+   ```bash
    sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave.com
    sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave.com
+   ```
 
 3. Update your package manager and install the native build:
+   ```bash
    sudo apt update && sudo apt install -y brave-browser
+   ```
 
 4. Restrict access to the Snap execution daemon so standard users cannot download alternative sandboxed browsers/VPNs:
+   ```bash
    sudo chmod 700 /usr/bin/snap
+   ```
 
 5. Restrict access to the Flatpak execution daemon (if installed):
+   ```bash
    sudo chmod 700 /usr/bin/flatpak
+   ```
 
 ---
 
