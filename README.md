@@ -67,22 +67,22 @@ This step locks Brave Browser's network settings, disables hidden proxy loophole
    ```
 3. Paste the following comprehensive JSON configuration block:
    ```json
-{
-  "TorDisabled": true,
-  "BraveVPNDisabled": true,
-  "BraveWalletDisabled": true,
-  "ForceGoogleSafeSearch": true,
-  "ForceYouTubeRestrict": 2,
-  "ExtensionSettings": {
-    "*": {
-      "installation_mode": "blocked"
-    },
-    "ghmbeldphafepmbegfdlkpapadhbakde": {
-      "installation_mode": "normal_installed",
-      "update_url": "https://google.com"
-    }
-  }
-}
+   {
+     "TorDisabled": true,
+     "BraveVPNDisabled": true,
+     "BraveWalletDisabled": true,
+     "ForceGoogleSafeSearch": true,
+     "ForceYouTubeRestrict": 2,
+     "ExtensionSettings": {
+       "*": {
+         "installation_mode": "blocked"
+       },
+       "ghmbeldphafepmbegfdlkpapadhbakde": {
+         "installation_mode": "normal_installed",
+         "update_url": "https://google.com"
+       }
+     }
+   }
 
    ```
 4. Save the file (`Ctrl+O`, then `Enter`) and exit (`Ctrl+X`).
